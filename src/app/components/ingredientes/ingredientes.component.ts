@@ -15,21 +15,27 @@ import { Observable } from 'rxjs';
 export class IngredientesComponent extends CommonListarComponent<Ingrediente, IngredienteService> implements OnInit {
 
   autocompleteControl = new FormControl();
-  // ingredientesFiltrados: Ingrediente[] = [];
-  // ingredientesFiltrados: Ingrediente[] = [];
 
   constructor(service: IngredienteService) {
     super(service);
     this.titulo = 'Listado de Ingredientes';
     this.nombreModel = Ingrediente.name;
+    this.sortByField = 'nombre';
+    this.orderedType = 'asc';
    }
 
    ngOnInit() {
     this.calcularRangos();
     this.autocompleteControl.valueChanges.pipe(
       map(valor => typeof valor === 'string' ? valor : valor.nombre),
-      flatMap(valor => valor ? this.service.filtrarPorNombre(this.paginaActual.toString(), this.totalPorPagina.toString(), valor) :
-                                this.service.listarPaginas(this.paginaActual.toString(), this.totalPorPagina.toString()))
+      flatMap(
+        valor => valor
+                  ?
+                  this.service.filtrarPorNombreSortBy(
+                      this.paginaActual.toString(), this.totalPorPagina.toString(), valor, this.sortByField, this.orderedType)
+                  :
+                  this.service.listarPaginasSortBy(
+                      this.paginaActual.toString(), this.totalPorPagina.toString(), this.sortByField, this.orderedType))
       ).subscribe(ingredientes => {
         this.lista = ingredientes.content as Ingrediente[];
       });

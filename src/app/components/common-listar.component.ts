@@ -9,6 +9,8 @@ export abstract class CommonListarComponent<E extends Generic, S extends CommonS
   titulo: string;
   lista: E[];
   protected nombreModel: string;
+  protected sortByField: string;
+  protected orderedType: string;
 
   totalRegistros = 0;
   paginaActual = 0;
@@ -31,7 +33,7 @@ export abstract class CommonListarComponent<E extends Generic, S extends CommonS
   }
 
   protected calcularRangos() {
-    this.service.listarPaginas(this.paginaActual.toString(), this.totalPorPagina.toString())
+    this.service.listarPaginasSortBy(this.paginaActual.toString(), this.totalPorPagina.toString(), this.sortByField, this.orderedType)
       .subscribe(p => {
         this.lista = p.content as E[];
         this.totalRegistros = p.totalElements as number;

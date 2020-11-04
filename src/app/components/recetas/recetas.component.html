@@ -1,11 +1,11 @@
 <div class="card bg-light mb-3">
     <div class="card-header">{{titulo}}</div>
     <div class="card-body">
-        <button class="btn btn-primary my-2" routerLink="/ingredientes/form" style="float: right;">Nuevo Ingrediente</button>
+        <button class="btn btn-primary my-2" routerLink="/recetas/form" style="float: right;">Nueva Receta</button>
 
         <div>
             <!-- <mat-form-field> -->
-            <input matInput placeholder="buscar ingrediente" [formControl]="autocompleteControl" [matAutocomplete]="autocomplete">
+            <input matInput placeholder="buscar receta" [formControl]="autocompleteControl" [matAutocomplete]="autocomplete">
 
             <!-- <mat-autocomplete #autocomplete="matAutocomplete" [displayWith]="mostrarNombre" (optionSelected)="seleccionarIngrediente($event)"> -->
             <mat-autocomplete #autocomplete="matAutocomplete">
@@ -29,14 +29,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let ingrediente of lista">
+                <tr *ngFor="let receta of lista">
                     <!-- <td>{{ingrediente.id}}</td> -->
-                    <td>{{ingrediente.nombre}}</td>
-                    <td>{{ingrediente.createAt | date: 'dd/MM/yyyy'}}</td>
-                    <td><button class="btn btn-secondary btn-sm" [routerLink]="['/ingredientes/form', ingrediente.id]">
+                    <td>{{receta.nombre}}</td>
+                    <td>{{receta.createAt | date: 'dd/MM/yyyy'}}</td>
+                    <td><button class="btn btn-secondary btn-sm" [routerLink]="['/recetas/form', receta.id]">
                         editar
                     </button></td>
-                    <td><button class="btn btn-danger btn-sm" (click)="eliminar(ingrediente)">
+                    <td><button class="btn btn-danger btn-sm" (click)="eliminar(receta)">
                         eliminar
                     </button></td>
                 </tr>

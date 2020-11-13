@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 })
 export class IngredientesComponent extends CommonListarComponent<Ingrediente, IngredienteService> implements OnInit {
 
-  autocompleteControl = new FormControl();
+  // autocompleteControl = new FormControl();
 
   constructor(service: IngredienteService) {
     super(service);
@@ -22,24 +22,25 @@ export class IngredientesComponent extends CommonListarComponent<Ingrediente, In
     this.nombreModel = Ingrediente.name;
     this.sortByField = 'nombre';
     this.orderedType = 'asc';
+    this.autocompleteControl = new FormControl();
    }
 
-   ngOnInit() {
-    this.calcularRangos();
-    this.autocompleteControl.valueChanges.pipe(
-      map(valor => typeof valor === 'string' ? valor : valor.nombre),
-      flatMap(
-        valor => valor
-                  ?
-                  this.service.filtrarPorNombreSortBy(
-                      this.paginaActual.toString(), this.totalPorPagina.toString(), valor, this.sortByField, this.orderedType)
-                  :
-                  this.service.listarPaginasSortBy(
-                      this.paginaActual.toString(), this.totalPorPagina.toString(), this.sortByField, this.orderedType))
-      ).subscribe(ingredientes => {
-        this.lista = ingredientes.content as Ingrediente[];
-      });
-  }
+  //  ngOnInit() {
+  //   this.calcularRangos();
+  //   this.autocompleteControl.valueChanges.pipe(
+  //     map(valor => typeof valor === 'string' ? valor : valor.nombre),
+  //     flatMap(
+  //       valor => valor
+  //                 ?
+  //                 this.service.filtrarPorNombreSortBy(
+  //                     this.paginaActual.toString(), this.totalPorPagina.toString(), valor, this.sortByField, this.orderedType)
+  //                 :
+  //                 this.service.listarPaginasSortBy(
+  //                     this.paginaActual.toString(), this.totalPorPagina.toString(), this.sortByField, this.orderedType))
+  //     ).subscribe(ingredientes => {
+  //       this.lista = ingredientes.content as Ingrediente[];
+  //     });
+  // }
 
 
   // mostrarNombre(ingrediente?: Ingrediente): string {

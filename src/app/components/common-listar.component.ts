@@ -3,9 +3,12 @@ import Swal from 'sweetalert2';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { Generic } from '../models/generic';
 import { CommonService } from '../services/common.service';
+import { map, flatMap } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
 export abstract class CommonListarComponent<E extends Generic, S extends CommonService<E>> implements OnInit {
 
+  autocompleteControl: FormControl;
   titulo: string;
   lista: E[];
   protected nombreModel: string;
@@ -22,8 +25,25 @@ export abstract class CommonListarComponent<E extends Generic, S extends CommonS
 
   constructor(protected service: S) { }
 
+  // ngOnInit() {
+  //   this.calcularRangos();
+  // }
+
   ngOnInit() {
     this.calcularRangos();
+    this.autocompleteControl.valueChanges.pipe(
+      map(valor => typeof valor === 'string' ? valor : valor.nombre),
+      flatMap(
+        valor => valor
+                  ?
+                  this.service.filtrarPorNombreSortBy(
+                      this.paginaActual.toString(), this.totalPorPagina.toString(), valor, this.sortByField, this.orderedType)
+                  :
+                  this.service.listarPaginasSortBy(
+                      this.paginaActual.toString(), this.totalPorPagina.toString(), this.sortByField, this.orderedType))
+      ).subscribe(elements => {
+        this.lista = elements.content as E[];
+      });
   }
 
   paginar(event: PageEvent): void {

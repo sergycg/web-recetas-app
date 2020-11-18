@@ -22,50 +22,14 @@
                     <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5" name="observaciones" id="observaciones" placeholder="Observaciones" [(ngModel)]="model.observaciones"></textarea>
                 </mat-form-field>
             </div>
-
-            <!-- <mat-form-field appearance="legacy">
-                <input matInput placeholder="nombre" [formControl]="autocompleteControl" [matAutocomplete]="autocomplete" [(ngModel)]="model.ingredientes[0].ingrediente">
-
-                <mat-autocomplete #autocomplete="matAutocomplete" [displayWith]="mostrarNombre" (optionSelected)="seleccionarIngrediente($event)">
-                    <mat-option *ngFor="let ingrediente of ingredientesFiltrados" [value]="ingrediente">
-                        {{ingrediente.nombre}}
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-form-field> -->
-
             <div class="card-header">
                 <span>Ingredientes</span>
                 <button class="btn btn-primary" style="float: right; padding: .0rem .75rem !important;">Nuevo Ingrediente</button>
             </div>
             <div class="card-body">
-                <table class="table" *ngIf="model.ingredientes?.length>0">
+                <table class="table" *ngIf="myControlIngredientes?.length==model.ingredientes?.length">
                     <tbody>
-                        <!-- <tr *ngFor="let ingrediente of model.ingredientes;index as i">
-                            <td style="width: 20%; border: none">
-                                <mat-form-field appearance="legacy">
-                                    <input #ingredienteMedida matInput type="text" name="ingredienteMedida{{i}}" id="ingredienteMedida{{i}}" placeholder="Medida" [(ngModel)]="ingrediente.medida" required>
-                                </mat-form-field>
-                            </td>
-                            <td style="width: 20%; border: none">
-                                <mat-form-field appearance="legacy">
-                                    <input matInput placeholder="nombre" name="ingredienteNombre{{i}}" id="ingredienteNombre{{i}}" [formControl]="autocompleteControl" [matAutocomplete]="autocomplete" [(ngModel)]="ingrediente.ingrediente">
-
-                                    <mat-autocomplete #autocomplete="matAutocomplete" [displayWith]="mostrarNombre" (optionSelected)="seleccionarIngrediente($event)">
-                                        <mat-option *ngFor="let ingrediente of ingredientesFiltrados" [value]="ingrediente">
-                                            {{ingrediente.nombre}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-
-                            </td>
-                            <td style="width: 5%;border: none">
-                                <div class="example-button-container">
-                                    <button mat-icon-button color="warn" (click)="removeIngrediente(ingrediente)" name="botonEliminarIngrediente{{i}}" id="botonEliminarIngrediente{{i}}">
-                                      <mat-icon>delete</mat-icon>
-                                    </button>
-                                </div>
-                            </td> -->
-                        <tr *ngFor="let control of myControl;index as i">
+                        <tr *ngFor="let control of myControlIngredientes;index as i">
                             <td style="width: 20%; border: none">
                                 <mat-form-field appearance="legacy">
                                     <input #ingredienteMedida matInput type="text" name="ingredienteMedida{{i}}" id="ingredienteMedida{{i}}" placeholder="Medida" [(ngModel)]="model.ingredientes[i].medida" required>
@@ -73,10 +37,11 @@
                             </td>
                             <td style="width: 20%; border: none">
                                 <mat-form-field appearance="legacy">
-                                    <input matInput placeholder="nombre" name="ingredienteNombre{{i}}" id="ingredienteNombre{{i}}" [formControl]="myControl[i]" [matAutocomplete]="autocomplete" [(ngModel)]="model.ingredientes[i].ingrediente">
+                                    <input matInput placeholder="nombre" name="ingredienteNombre{{i}}" id="ingredienteNombre{{i}}" [formControl]="myControlIngredientes[i]" [matAutocomplete]="autocomplete" [(ngModel)]="model.ingredientes[i].ingrediente">
 
                                     <mat-autocomplete #autocomplete="matAutocomplete" [displayWith]="mostrarNombre" (optionSelected)="seleccionarIngrediente($event)">
                                         <mat-option *ngFor="let ingrediente of ingredientesFiltrados[i] | async" [value]="ingrediente">
+                                            <!-- <mat-option *ngFor="let ingrediente of ingredientesFiltrados[i]" [value]="ingrediente"> -->
                                             {{ingrediente.nombre}}
                                         </mat-option>
                                     </mat-autocomplete>
@@ -102,24 +67,23 @@
 
             <div class="card-header">Pasos</div>
             <div class="card-body">
-                <table class="table" *ngIf="model.pasos?.length>0">
+                <table class="table" *ngIf="myControlPasos?.length==model.pasos?.length">
                     <tbody>
-                        <tr *ngFor="let paso of model.pasos;index as i">
+                        <tr *ngFor="let paso of myControlPasos;index as i;">
                             <td style="width: 20%; border: none">
                                 <mat-form-field appearance="legacy">
-                                    <input #pasotitulo matInput type="text" name="tituloPaso{{i}}" id="tituloPaso{{i}}" placeholder="Título" [(ngModel)]="paso.tituloPaso" required>
+                                    <input matInput type="text" name="tituloPaso{{i}}" id="tituloPaso{{i}}" placeholder="Título" [(ngModel)]="model.pasos[i].tituloPaso" required>
                                 </mat-form-field>
                             </td>
                             <td style="width: 75%; border: none">
                                 <mat-form-field appearance="legacy" style="display: block;">
-                                    <textarea #descripciontitulo matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" name="descripcionPaso{{i}}" id="descripcionPaso{{i}}" placeholder="Descripción" [(ngModel)]="paso.descripcionPaso"
-                                        required>
+                                    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" name="descripcionPaso{{i}}" id="descripcionPaso{{i}}" placeholder="Descripción" [(ngModel)]="model.pasos[i].descripcionPaso" required>
                             </textarea>
                                 </mat-form-field>
                             </td>
                             <td style="width: 5%;border: none">
                                 <div class="example-button-container">
-                                    <button mat-icon-button color="warn" (click)="removePaso(paso)" name="botonEliminarPaso{{i}}" id="botonEliminarPaso{{i}}">
+                                    <button mat-icon-button color="warn" (click)="removePaso(model.pasos[i], i)" name="botonEliminarPaso{{i}}" id="botonEliminarPaso{{i}}">
                                       <mat-icon>delete</mat-icon>
                                     </button>
                                 </div>

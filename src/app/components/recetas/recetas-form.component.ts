@@ -21,10 +21,10 @@ import { Observable } from 'rxjs';
 export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaService> implements OnInit {
 
   // @ViewChildren('pasotitulo') pasos: QueryList<any>;
-  autocompleteControl: FormControl;
-  // ingredientesFiltrados: Ingrediente[];
-  ingredientesFiltrados: Observable<Ingrediente[]>[] = [];
-  myControl: FormControl[] = [];
+  ingredientesFiltrados: Observable<Ingrediente[]>[] = []; // Primera forma de hacerlo
+  // ingredientesFiltrados: Ingrediente[][] = []; //// Segunda forma de hacerlo
+  myControlIngredientes: FormControl[] = [];
+  myControlPasos: FormControl[] = [];
 
   constructor(service: RecetaService,
               private serviceIngrediente: IngredienteService,
@@ -36,18 +36,19 @@ export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaServ
       this.model = new Receta();
       this.nombreModel = Receta.name;
       this.redirect = '/recetas';
-      this.autocompleteControl = new FormControl();
   }
 
   public addPaso(): void {
-    document.getElementById('botonAddPaso').blur();
+    this.myControlPasos = [];
     this.model.pasos.push(new Paso());
+    this.model.pasos.forEach(() => this.myControlPasos.push(new FormControl()));
+    document.getElementById('botonAddPaso').blur();
     this.changeDetectorRef.detectChanges();
     // this.pasos.last.nativeElement.focus();
     document.getElementById('tituloPaso' + (this.model.pasos.length - 1)).focus();
   }
 
-  public removePaso(paso: Paso): void {
+  public removePaso(paso: Paso, index: number): void {
     document.getElementById('botonEliminarPaso' + (this.model.pasos.length - 1)).blur();
     Swal.fire({
       title: 'Cuidado:',
@@ -59,13 +60,14 @@ export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaServ
       confirmButtonText: 'Si, eliminar!'
     }).then((result) => {
       if (result.value) {
-        this.model.pasos = this.model.pasos.filter(p => p.id !== paso.id);
+        // this.model.pasos = this.model.pasos.filter(p => p.id !== paso.id);
+        this.model.pasos.splice(index, 1);
+        this.myControlPasos.splice(index, 1);
       }
     });
   }
 
   public isPasosValidos(): boolean {
-    // salida: boolean;
     let salida: boolean = true;
     this.model.pasos.forEach(e => {
       if (e.tituloPaso === undefined || e.tituloPaso === ''
@@ -76,27 +78,44 @@ export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaServ
     return salida;
   }
 
-  private addFormControl() {
-    const nuevo = this.myControl.push(new FormControl(''));
-    this.ingredientesFiltrados.push(this.myControl[nuevo - 1].valueChanges
+  private addFormControlIngredientes() {
+    const nuevo = this.myControlIngredientes.push(new FormControl(''));
+    // Primera forma de hacerlo
+    this.ingredientesFiltrados.push(this.myControlIngredientes[nuevo - 1].valueChanges
       .pipe(
         map(valor => typeof valor === 'string' ? valor : valor.nombre),
         flatMap(valor => valor ? this.serviceIngrediente.listarPorNombre(valor) : this.serviceIngrediente.listar())
       )
     );
+
+    // Segunda forma de hacerlo
+    // this.ingredientesFiltrados.push([]);
+    // this.myControl[nuevo - 1].valueChanges
+    //   .pipe(
+    //     map(valor => typeof valor === 'string' ? valor : valor.nombre),
+    //     flatMap(valor => valor ? this.serviceIngrediente.listarPorNombre(valor) : this.serviceIngrediente.listar())
+    //   ).subscribe(elements => {
+    //   this.ingredientesFiltrados[nuevo - 1] = elements as Ingrediente[];
+    // });
   }
+
   public addIngrediente(): void {
+    // console.log(this.model);
+    this.myControlIngredientes = [];
+    this.ingredientesFiltrados = [];
     document.getElementById('botonAddIngrediente').blur();
-    this.addFormControl();
     const recetaIngredientes: RecetaIngredientes = new RecetaIngredientes();
     recetaIngredientes.ingrediente = new Ingrediente();
     this.model.ingredientes.push(recetaIngredientes);
+    this.model.ingredientes.forEach(() => this.addFormControlIngredientes());
+    console.log(this.model);
     this.changeDetectorRef.detectChanges();
     // this.pasos.last.nativeElement.focus();
     document.getElementById('ingredienteMedida' + (this.model.ingredientes.length - 1)).focus();
   }
 
   public removeIngrediente(ingrediente: RecetaIngredientes, index: number): void {
+    console.log(index);
     document.getElementById('botonEliminarIngrediente' + (this.model.ingredientes.length - 1)).blur();
     Swal.fire({
       title: 'Cuidado:',
@@ -108,9 +127,10 @@ export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaServ
       confirmButtonText: 'Si, eliminar!'
     }).then((result) => {
       if (result.value) {
+        // this.model.ingredientes = this.model.ingredientes.filter(i => i.id !== ingrediente.id);
+        this.model.ingredientes.splice(index, 1);
         this.ingredientesFiltrados.splice(index, 1);
-        this.myControl.splice(index, 1);
-        this.model.ingredientes = this.model.ingredientes.filter(i => i.id !== ingrediente.id);
+        this.myControlIngredientes.splice(index, 1);
       }
     });
   }
@@ -126,30 +146,6 @@ export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaServ
     return salida;
   }
 
-  // ngOnInit() {
-  //   this.route.paramMap.subscribe(params => {
-  //     const id: number = +params.get('id');
-  //     if (id) {
-  //       this.service.ver(id).subscribe(m => {
-  //         this.model = m;
-  //         this.titulo = 'Editar ' + this.nombreModel;
-  //       });
-  //     }
-  //   });
-
-  //   this.serviceIngrediente.listar().subscribe(m => {
-  //     this.ingredientesFiltrados = m;
-  //   });
-
-  //   this.autocompleteControl.valueChanges.pipe(
-  //     map(valor => typeof valor === 'string' ? valor : valor.nombre),
-  //     flatMap(valor => valor ? this.serviceIngrediente.listarPorNombre(valor) : [])
-  //     ).subscribe(ingredientes => {
-  //       // console.log(ingredientes);
-  //       this.ingredientesFiltrados = ingredientes as Ingrediente[];
-  //     });
-  // }
-
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       const id: number = +params.get('id');
@@ -157,7 +153,8 @@ export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaServ
         this.service.ver(id).subscribe(m => {
           this.model = m;
           this.titulo = 'Editar ' + this.nombreModel;
-          this.model.ingredientes.forEach(() => this.addFormControl());
+          this.model.ingredientes.forEach(() => this.addFormControlIngredientes());
+          this.model.pasos.forEach(() => this.myControlPasos.push(new FormControl()));
         });
       }
     });
@@ -169,27 +166,22 @@ export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaServ
 
   seleccionarIngrediente(event: MatAutocompleteSelectedEvent): void {
     const ingrediente = event.option.value as Ingrediente;
-
-    // if (!this.existe(examen.id)) {
-    //   this.examenesAsignar = this.examenesAsignar.concat(examen);
-
-    //   console.log(this.examenesAsignar);
-    // } else {
+    console.log(ingrediente);
+    console.log(this.model.ingredientes);
+    // if (this.model.ingredientes.some((item) => item.ingrediente.id === ingrediente.id)) {
     //   Swal.fire(
     //     'Error:',
-    //     `El examen ${examen.nombre} ya está asignado al curso`,
+    //     `El ingrediente ${ingrediente.nombre} ya está asignado a la receta`,
     //     'error'
     //   );
+      // this.myControlIngredientes[index].setValue(new Ingrediente());
     // }
-
     // this.autocompleteControl.setValue('');
     event.option.deselect();
     event.option.focus();
-    console.log(this.model);
+    // console.log(this.myControl[index]);
     // this.lista = this.ingredientesFiltrados;
   }
-
-
 
   // ngAfterViewChecked(): void {
   //   this.pasos.last.nativeElement.focus();

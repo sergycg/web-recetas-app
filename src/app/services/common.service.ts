@@ -29,19 +29,27 @@ export abstract class CommonService<E extends Generic> {
     return this.http.get<any>(`${this.baseEndpoint}/pagina`, { params: params });
   }
 
-  public filtrarPorNombre(page: string, size: string, valor: string): Observable<any> {
+  public filtrarPorNombrePage(page: string, size: string, valor: string): Observable<any> {
     const params = new HttpParams()
       .set('page', page)
       .set('size', size);
     return this.http.get<any>(`${this.baseEndpoint}/pagina/filtrar/${valor}`, { params: params });
   }
 
-  public filtrarPorNombreSortBy(page: string, size: string, valor: string, sortby: string, ordered: string): Observable<any> {
+  public filtrarPorNombrePageSortBy(page: string, size: string, valor: string, sortby: string, ordered: string): Observable<any> {
     const params = new HttpParams()
       .set('page', page)
       .set('size', size)
       .set('sort', sortby + ',' + ordered);
     return this.http.get<any>(`${this.baseEndpoint}/pagina/filtrar/${valor}`, { params: params });
+  }
+
+  public listarPorNombre(valor: string): Observable<E[]> {
+    return this.http.get<E[]>(`${this.baseEndpoint}/nombre/${valor}`);
+  }
+
+  public filtrarPorNombre(valor: string): Observable<E[]> {
+    return this.http.get<E[]>(`${this.baseEndpoint}/filtrar/${valor}`);
   }
 
   public ver(id: number): Observable<E> {

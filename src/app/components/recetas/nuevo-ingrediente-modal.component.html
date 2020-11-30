@@ -1,0 +1,18 @@
+<div class="card bg-light mb-3">
+    <div class="card-header">{{titulo}}</div>
+    <div class="card-body">
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" class="form-control" id="nombre" [(ngModel)]="ingrediente.nombre">
+            <div class="alert alert-danger" *ngIf="error">
+                {{ error }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-button (click)="cancelar()">Cancelar</button>
+    <button mat-button (click)="crear()">Crear</button>
+    <!-- <button mat-button [mat-dialog-close]="ingrediente" cdkFocusInitial>Crear</button> -->
+</div>

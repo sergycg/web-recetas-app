@@ -12,6 +12,8 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { map, flatMap, startWith } from 'rxjs/operators';
 import { IngredienteService } from '../../services/ingrediente.service';
 import { Observable } from 'rxjs';
+import { NuevoIngredienteModalComponent } from './nuevo-ingrediente-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-recetas-form',
@@ -30,7 +32,8 @@ export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaServ
               private serviceIngrediente: IngredienteService,
               router: Router,
               route: ActivatedRoute,
-              private changeDetectorRef: ChangeDetectorRef) {
+              private changeDetectorRef: ChangeDetectorRef,
+              public dialog: MatDialog) {
       super(service, router, route);
       this.titulo = 'Crear Receta';
       this.model = new Receta();
@@ -84,7 +87,7 @@ export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaServ
     this.ingredientesFiltrados.push(this.myControlIngredientes[nuevo - 1].valueChanges
       .pipe(
         map(valor => typeof valor === 'string' ? valor : valor.nombre),
-        flatMap(valor => valor ? this.serviceIngrediente.listarPorNombre(valor) : this.serviceIngrediente.listar())
+        flatMap(valor => valor ? this.serviceIngrediente.filtrarPorNombre(valor) : this.serviceIngrediente.listar())
       )
     );
 
@@ -144,6 +147,19 @@ export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaServ
       }
     });
     return salida;
+  }
+
+  crearIngredienteBBDD(): void {
+    const dialogRef = this.dialog.open(NuevoIngredienteModalComponent, {
+      width: '400px'
+      // data: {name: this.name, animal: this.animal}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      console.log(result);
+      // this.animal = result;
+    });
   }
 
   ngOnInit() {

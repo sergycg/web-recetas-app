@@ -4,15 +4,9 @@ import { HttpClientModule} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AlumnosComponent } from './components/alumnos/alumnos.component';
-import { CursosComponent } from './components/cursos/cursos.component';
-import { ExamenesComponent } from './components/examenes/examenes.component';
 import { LayoutModule } from './layout/layout.module';
-import { AlumnosFormComponent } from './components/alumnos/alumnos-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatPaginatorModule} from '@angular/material/paginator';
-import { CursoFormComponent } from './components/cursos/curso-form.component';
-import { ExamenFormComponent } from './components/examenes/examen-form.component';
 import { IngredientesComponent } from './components/ingredientes/ingredientes.component';
 import { IngredientesFormComponent } from './components/ingredientes/ingredientes-form.component';
 import {MatTableModule} from '@angular/material/table';
@@ -23,23 +17,21 @@ import {MatCardModule} from '@angular/material/card';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
+import {MatDialogModule} from '@angular/material/dialog';
 import { RecetasComponent } from './components/recetas/recetas.component';
 import { RecetasFormComponent } from './components/recetas/recetas-form.component';
+import { NuevoIngredienteModalComponent } from './components/recetas/nuevo-ingrediente-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AlumnosComponent,
-    CursosComponent,
-    ExamenesComponent,
-    AlumnosFormComponent,
-    CursoFormComponent,
-    ExamenFormComponent,
     IngredientesComponent,
     IngredientesFormComponent,
     RecetasComponent,
-    RecetasFormComponent
+    RecetasFormComponent,
+    NuevoIngredienteModalComponent
   ],
+  entryComponents: [ NuevoIngredienteModalComponent ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -56,6 +48,7 @@ import { RecetasFormComponent } from './components/recetas/recetas-form.componen
     MatTabsModule,
     MatAutocompleteModule,
     MatIconModule,
+    MatDialogModule,
     ReactiveFormsModule
   ],
   providers: [],

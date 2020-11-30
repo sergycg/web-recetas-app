@@ -29,14 +29,21 @@ export abstract class CommonFormComponent<E extends Generic, S extends CommonSer
   }
 
   public crear(): void {
-    this.service.crear(this.model).subscribe(m => {
-      console.log(m);
-      Swal.fire('Nuevo:', `${this.nombreModel} ${m.nombre} creado con éxito`, 'success');
-      this.router.navigate([this.redirect]);
-    }, err => {
-      if (err.status === 400) {
-        this.error = err.error;
-        console.log(this.error);
+    this.service.listarPorNombre(this.model.nombre).subscribe(lista => {
+      console.log(lista);
+      if (lista.length === 0) {
+        this.service.crear(this.model).subscribe(m => {
+          console.log(m);
+          Swal.fire('Nuevo:', `${this.nombreModel} ${m.nombre} creado con éxito`, 'success');
+          this.router.navigate([this.redirect]);
+        }, err => {
+          if (err.status === 400) {
+            this.error = err.error;
+            console.log(this.error);
+          }
+        });
+      } else {
+        Swal.fire('Cuidado:', `${this.model.nombre} ya existe`, 'warning');
       }
     });
   }
@@ -68,6 +75,19 @@ export abstract class CommonFormComponent<E extends Generic, S extends CommonSer
         console.log(this.error);
       }
     });
+  }
+
+  public preGuardar(): void {
+    this.model.id ? this.guardar()
+                  : this.service.listarPorNombre(this.model.nombre)
+                  .subscribe(lista => {
+                    console.log(lista);
+                    if (lista.length === 0) {
+                      this.guardar();
+                    } else {
+                      Swal.fire('Cuidado:', `${this.model.nombre} ya existe`, 'warning');
+                    }
+                  });
   }
 
 }

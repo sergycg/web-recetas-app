@@ -36,7 +36,7 @@ export abstract class CommonListarComponent<E extends Generic, S extends CommonS
       flatMap(
         valor => valor
                   ?
-                  this.service.filtrarPorNombreSortBy(
+                  this.service.filtrarPorNombrePageSortBy(
                       this.paginaActual.toString(), this.totalPorPagina.toString(), valor, this.sortByField, this.orderedType)
                   :
                   this.service.listarPaginasSortBy(

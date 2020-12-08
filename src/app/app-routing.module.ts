@@ -4,6 +4,7 @@ import { IngredientesComponent } from './components/ingredientes/ingredientes.co
 import { IngredientesFormComponent } from './components/ingredientes/ingredientes-form.component';
 import { RecetasComponent } from './components/recetas/recetas.component';
 import { RecetasFormComponent } from './components/recetas/recetas-form.component';
+import { RecetasVistaComponent } from './components/recetas/recetas-vista.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   {path: 'ingredientes/form', component: IngredientesFormComponent},
   {path: 'ingredientes/form/:id', component: IngredientesFormComponent},
   {path: 'recetas', component: RecetasComponent},
+  {path: 'recetas/vista/:id', component: RecetasVistaComponent},
   {path: 'recetas/form', component: RecetasFormComponent},
   {path: 'recetas/form/:id', component: RecetasFormComponent}
 ];

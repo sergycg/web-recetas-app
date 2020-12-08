@@ -21,6 +21,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { RecetasComponent } from './components/recetas/recetas.component';
 import { RecetasFormComponent } from './components/recetas/recetas-form.component';
 import { NuevoIngredienteModalComponent } from './components/recetas/nuevo-ingrediente-modal.component';
+import { RecetasVistaComponent } from './components/recetas/recetas-vista.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { NuevoIngredienteModalComponent } from './components/recetas/nuevo-ingre
     IngredientesFormComponent,
     RecetasComponent,
     RecetasFormComponent,
-    NuevoIngredienteModalComponent
+    NuevoIngredienteModalComponent,
+    RecetasVistaComponent
   ],
   entryComponents: [ NuevoIngredienteModalComponent ],
   imports: [

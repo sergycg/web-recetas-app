@@ -9,4 +9,5 @@ export class Receta implements Generic {
     createAt: string;
     ingredientes: RecetaIngredientes[] = [];
     pasos: Paso[] = [];
+    fotoPortada: string;
 }

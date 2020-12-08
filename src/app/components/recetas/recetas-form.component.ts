@@ -14,6 +14,7 @@ import { IngredienteService } from '../../services/ingrediente.service';
 import { Observable } from 'rxjs';
 import { NuevoIngredienteModalComponent } from './nuevo-ingrediente-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-recetas-form',
@@ -27,6 +28,8 @@ export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaServ
   // ingredientesFiltrados: Ingrediente[][] = []; //// Segunda forma de hacerlo
   myControlIngredientes: FormControl[] = [];
   myControlPasos: FormControl[] = [];
+  fotoSeleccionada: File;
+  progreso: number = 0;
 
   constructor(service: RecetaService,
               private serviceIngrediente: IngredienteService,
@@ -38,7 +41,7 @@ export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaServ
       this.titulo = 'Crear Receta';
       this.model = new Receta();
       this.nombreModel = Receta.name;
-      this.redirect = '/recetas';
+      this.redirect = undefined;
   }
 
   public addPaso(): void {
@@ -202,5 +205,37 @@ export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaServ
   // ngAfterViewChecked(): void {
   //   this.pasos.last.nativeElement.focus();
   // }
+
+  seleccionarFoto(event) {
+    this.fotoSeleccionada = event.target.files[0];
+    this.progreso = 0;
+    console.log(this.fotoSeleccionada);
+    if (this.fotoSeleccionada.type.indexOf('image') < 0) {
+      Swal.fire('Error seleccionar imagen: ', 'El archivo debe ser del tipo imagen', 'warning');
+      this.fotoSeleccionada = null;
+    }
+  }
+
+  subirFoto() {
+
+    if (!this.fotoSeleccionada) {
+      Swal.fire('Error seleccionar imagen: ', 'El archivo debe ser del tipo imagen', 'error');
+    } else {
+      this.service.subirFoto(this.fotoSeleccionada, this.model.id)
+        .subscribe(event => {
+          if (event.type === HttpEventType.UploadProgress) {
+            this.progreso = Math.round((event.loaded / event.total) * 100);
+          } else if (event.type === HttpEventType.Response) {
+            const response: any = event.body;
+            const receta = response.receta as Receta;
+            this.model.fotoPortada = receta.fotoPortada;
+
+            // this.modalService.notificarUpload.emit(this.);
+            Swal.fire('La foto se ha subido completamente!', response.mensaje, 'success');
+          }
+        });
+    }
+  }
+
 
   }

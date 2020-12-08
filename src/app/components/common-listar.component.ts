@@ -17,8 +17,8 @@ export abstract class CommonListarComponent<E extends Generic, S extends CommonS
 
   totalRegistros = 0;
   paginaActual = 0;
-  totalPorPagina = 4;
-  pageSizeOptions: number[] = [3, 5, 10, 25, 100];
+  totalPorPagina = 50;
+  pageSizeOptions: number[] = [5, 10, 25, 100];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   error: any;

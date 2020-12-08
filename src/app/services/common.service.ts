@@ -66,8 +66,8 @@ export abstract class CommonService<E extends Generic> {
       { headers: this.cabeceras });
   }
 
-  public guardar(e: E): Observable<void> {
-    return this.http.post<void>(this.baseEndpoint, e,
+  public guardar(e: E): Observable<E> {
+    return this.http.post<E>(this.baseEndpoint, e,
       { headers: this.cabeceras });
   }
 

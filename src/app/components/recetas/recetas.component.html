@@ -21,18 +21,25 @@
         <table class="table table-hover table-striped" *ngIf="lista?.length>0">
             <thead>
                 <tr>
-                    <!-- <th>id</th> -->
+                    <th></th>
                     <th>nombre</th>
                     <th>fecha</th>
+                    <!-- <th></th> -->
                     <th></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let receta of lista">
-                    <!-- <td>{{ingrediente.id}}</td> -->
+                    <td>
+                        <img [routerLink]="['/recetas/vista', receta.id]" *ngIf="receta.fotoPortada" src="http://192.168.1.49:8084/recetas/imagen/{{receta.fotoPortada}}" alt="{{receta.fotoPortada}}" class="img-thumbnail rounded" style="width: 64px;  height: 64px; cursor:pointer;">
+                        <img [routerLink]="['/recetas/vista', receta.id]" *ngIf="!receta.fotoPortada" src="../../../assets/images/camara-de-fotos.png" alt="Sin foto" class="img-thumbnail rounded" style="width: 64px; height: 64px; cursor:pointer;">
+                    </td>
                     <td>{{receta.nombre}}</td>
                     <td>{{receta.createAt | date: 'dd/MM/yyyy'}}</td>
+                    <!-- <td><button class="btn btn-info btn-sm" [routerLink]="['/recetas/vista', receta.id]">
+                        ver
+                    </button></td> -->
                     <td><button class="btn btn-secondary btn-sm" [routerLink]="['/recetas/form', receta.id]">
                         editar
                     </button></td>

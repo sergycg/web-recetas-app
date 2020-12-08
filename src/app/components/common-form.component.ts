@@ -35,7 +35,9 @@ export abstract class CommonFormComponent<E extends Generic, S extends CommonSer
         this.service.crear(this.model).subscribe(m => {
           console.log(m);
           Swal.fire('Nuevo:', `${this.nombreModel} ${m.nombre} creado con éxito`, 'success');
-          this.router.navigate([this.redirect]);
+          if (this.redirect !== undefined && this.redirect !== '') {
+             this.router.navigate([this.redirect]);
+          }
         }, err => {
           if (err.status === 400) {
             this.error = err.error;
@@ -52,7 +54,9 @@ export abstract class CommonFormComponent<E extends Generic, S extends CommonSer
     this.service.editar(this.model).subscribe(m => {
       console.log(m);
       Swal.fire('Modificado:', `${this.nombreModel} ${m.nombre} actualizado con éxito`, 'success');
-      this.router.navigate([this.redirect]);
+      if (this.redirect !== undefined && this.redirect !== '') {
+        this.router.navigate([this.redirect]);
+      }
     }, err => {
       if (err.status === 400) {
         this.error = err.error;
@@ -62,13 +66,16 @@ export abstract class CommonFormComponent<E extends Generic, S extends CommonSer
   }
 
   public guardar(): void {
-    this.service.guardar(this.model).subscribe(() => {
+    this.service.guardar(this.model).subscribe((m) => {
       const mensaje: string = this.model.id ? `Modificado: ${this.nombreModel} ${this.model.nombre} actualizado con éxito` :
       `Nuevo: ${this.nombreModel} ${this.model.nombre} creado con éxito`;
       const accion: string = this.model.id ? 'Modificado:' : 'Nuevo:';
       console.log(mensaje);
+      this.model = m;
       Swal.fire(accion, mensaje, 'success');
-      this.router.navigate([this.redirect]);
+      if (this.redirect !== undefined && this.redirect !== '') {
+        this.router.navigate([this.redirect]);
+      }
     }, err => {
       if (err.status === 400) {
         this.error = err.error;

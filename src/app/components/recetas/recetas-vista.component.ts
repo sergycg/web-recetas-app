@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RecetaService } from '../../services/receta.service';
 import { ActivatedRoute } from '@angular/router';
 import { Receta } from '../../models/receta';
+import { BASE_ENDPOINT } from '../../config/app';
 
 @Component({
   selector: 'app-recetas-vista',
@@ -25,7 +26,7 @@ export class RecetasVistaComponent implements OnInit {
         this.service.ver(id).subscribe(m => {
           this.model = m;
           if (this.model.fotoPortada != null && this.model.fotoPortada !== undefined && this.model.fotoPortada !== '') {
-            this.imagen = 'http://192.168.1.49:8084/recetas/imagen/' + this.model.fotoPortada;
+            this.imagen = BASE_ENDPOINT + '/api/recetas/recetas/imagen/' + this.model.fotoPortada;
           }
         });
       }

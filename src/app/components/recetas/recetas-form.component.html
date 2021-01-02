@@ -87,7 +87,7 @@
                                     {{progreso}}%
                                 </div>
                             </div>
-                            <img *ngIf="this.model?.fotoPortada" src="http://192.168.1.49:8084/recetas/imagen/{{this.model.fotoPortada}}" alt="{{this.model.fotoPortada}}" class="img-thumbnail rounded">
+                            <img *ngIf="this.model?.fotoPortada" src="{{baseEndpoint}}/api/recetas/recetas/imagen/{{this.model.fotoPortada}}" alt="{{this.model.fotoPortada}}" class="img-thumbnail rounded">
                             <img *ngIf="!this.model?.fotoPortada" src="../../../assets/images/camara-de-fotos.png" alt="camara-de-fotos.png" class="img-thumbnail rounded">
                         </div>
 

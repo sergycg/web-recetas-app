@@ -3,6 +3,8 @@ import { CommonListarComponent } from '../common-listar.component';
 import { Receta } from '../../models/receta';
 import { RecetaService } from '../../services/receta.service';
 import { FormControl } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { BASE_ENDPOINT } from '../../config/app';
 
 @Component({
   selector: 'app-recetas',
@@ -11,7 +13,9 @@ import { FormControl } from '@angular/forms';
 })
 export class RecetasComponent extends CommonListarComponent<Receta, RecetaService> implements OnInit {
 
-  constructor(service: RecetaService) {
+  baseEndpoint: string = BASE_ENDPOINT;
+
+  constructor(service: RecetaService, public authService: AuthService) {
     super(service);
     this.titulo = 'Listado de Recetas';
     this.nombreModel = Receta.name;

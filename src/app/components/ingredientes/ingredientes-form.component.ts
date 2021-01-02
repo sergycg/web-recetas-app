@@ -3,7 +3,6 @@ import { Ingrediente } from '../../models/ingrediente';
 import { IngredienteService } from '../../services/ingrediente.service';
 import { CommonFormComponent } from '../common-form.component';
 import { Router, ActivatedRoute } from '@angular/router';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-ingredientes-form',

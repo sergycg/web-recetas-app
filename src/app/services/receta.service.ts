@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class RecetaService extends CommonService<Receta> {
 
-  protected baseEndpoint = BASE_ENDPOINT + '/recetas';
+  protected baseEndpoint = BASE_ENDPOINT + '/api/recetas/recetas';
 
   constructor(http: HttpClient) {
     super(http);

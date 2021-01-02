@@ -15,6 +15,7 @@ import { Observable } from 'rxjs';
 import { NuevoIngredienteModalComponent } from './nuevo-ingrediente-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpEventType } from '@angular/common/http';
+import { WIDTH_MODAL_INGREDIENTES, BASE_ENDPOINT } from '../../config/app';
 
 @Component({
   selector: 'app-recetas-form',
@@ -30,6 +31,7 @@ export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaServ
   myControlPasos: FormControl[] = [];
   fotoSeleccionada: File;
   progreso: number = 0;
+  baseEndpoint: string = BASE_ENDPOINT;
 
   constructor(service: RecetaService,
               private serviceIngrediente: IngredienteService,
@@ -154,7 +156,7 @@ export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaServ
 
   crearIngredienteBBDD(): void {
     const dialogRef = this.dialog.open(NuevoIngredienteModalComponent, {
-      width: '400px'
+      width: WIDTH_MODAL_INGREDIENTES
       // data: {name: this.name, animal: this.animal}
     });
 

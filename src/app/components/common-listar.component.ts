@@ -76,25 +76,27 @@ export abstract class CommonListarComponent<E extends Generic, S extends CommonS
         this.service.eliminar(e.id).subscribe(() => {
           this.calcularRangos();
           Swal.fire('Eliminado:', `${this.nombreModel} ${e.nombre} eliminado con éxito`, 'success');
-        }, err => {
-          if (err.status === 500) {
-            this.error = err.error;
-            console.log(this.error);
-            if (err.error.message.indexOf('ConstraintViolationException') !== -1) {
-              Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: `Parece que ${e.nombre} se está usando!!!`
-              });
-            } else {
-              Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Parece que algo ha ido mal!!!'
-              });
-            }
-          }
-        });
+        }
+        // , err => {
+        //   if (err.status === 500) {
+        //     this.error = err.error;
+        //     console.log(this.error);
+        //     if (err.error.message.indexOf('ConstraintViolationException') !== -1) {
+        //       Swal.fire({
+        //         icon: 'error',
+        //         title: 'Oops...',
+        //         text: `Parece que ${e.nombre} se está usando!!!`
+        //       });
+        //     } else {
+        //       Swal.fire({
+        //         icon: 'error',
+        //         title: 'Oops...',
+        //         text: 'Parece que algo ha ido mal!!!'
+        //       });
+        //     }
+        //   }
+        // }
+        );
       }
     });
 

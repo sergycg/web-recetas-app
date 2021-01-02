@@ -1,7 +1,7 @@
 <div class="card bg-light mb-3">
     <div class="card-header">{{titulo}}</div>
     <div class="card-body">
-        <button class="btn btn-primary my-2" routerLink="/ingredientes/form" style="float: right;">Nuevo Ingrediente</button>
+        <button *ngIf="authService.hasRole('ROLE_ADMIN')" class="btn btn-primary my-2" routerLink="/ingredientes/form" style="float: right;">Nuevo Ingrediente</button>
 
         <div>
             <!-- <mat-form-field> -->
@@ -24,8 +24,8 @@
                     <!-- <th>id</th> -->
                     <th>nombre</th>
                     <th>fecha</th>
-                    <th></th>
-                    <th></th>
+                    <th *ngIf="authService.hasRole('ROLE_ADMIN')"></th>
+                    <th *ngIf="authService.hasRole('ROLE_ADMIN')"></th>
                 </tr>
             </thead>
             <tbody>
@@ -33,10 +33,10 @@
                     <!-- <td>{{ingrediente.id}}</td> -->
                     <td>{{ingrediente.nombre}}</td>
                     <td>{{ingrediente.createAt | date: 'dd/MM/yyyy'}}</td>
-                    <td><button class="btn btn-secondary btn-sm" [routerLink]="['/ingredientes/form', ingrediente.id]">
+                    <td *ngIf="authService.hasRole('ROLE_ADMIN')"><button class="btn btn-secondary btn-sm" [routerLink]="['/ingredientes/form', ingrediente.id]">
                         editar
                     </button></td>
-                    <td><button class="btn btn-danger btn-sm" (click)="eliminar(ingrediente)">
+                    <td *ngIf="authService.hasRole('ROLE_ADMIN')"><button class="btn btn-danger btn-sm" (click)="eliminar(ingrediente)">
                         eliminar
                     </button></td>
                 </tr>

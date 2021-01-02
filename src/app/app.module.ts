@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule} from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,6 +22,9 @@ import { RecetasComponent } from './components/recetas/recetas.component';
 import { RecetasFormComponent } from './components/recetas/recetas-form.component';
 import { NuevoIngredienteModalComponent } from './components/recetas/nuevo-ingrediente-modal.component';
 import { RecetasVistaComponent } from './components/recetas/recetas-vista.component';
+import { LoginComponent } from './components/login/login.component';
+import { TokenInterceptor } from './interceptors/token.interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,8 @@ import { RecetasVistaComponent } from './components/recetas/recetas-vista.compon
     RecetasComponent,
     RecetasFormComponent,
     NuevoIngredienteModalComponent,
-    RecetasVistaComponent
+    RecetasVistaComponent,
+    LoginComponent
   ],
   entryComponents: [ NuevoIngredienteModalComponent ],
   imports: [
@@ -53,7 +57,10 @@ import { RecetasVistaComponent } from './components/recetas/recetas-vista.compon
     MatDialogModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

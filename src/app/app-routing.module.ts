@@ -5,17 +5,25 @@ import { IngredientesFormComponent } from './components/ingredientes/ingrediente
 import { RecetasComponent } from './components/recetas/recetas.component';
 import { RecetasFormComponent } from './components/recetas/recetas-form.component';
 import { RecetasVistaComponent } from './components/recetas/recetas-vista.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './guards/auth.guard';
+import { RoleGuard } from './guards/role.guard';
 
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'recetas'},
   {path: 'ingredientes', component: IngredientesComponent},
-  {path: 'ingredientes/form', component: IngredientesFormComponent},
-  {path: 'ingredientes/form/:id', component: IngredientesFormComponent},
+  {path: 'ingredientes/form', component: IngredientesFormComponent,
+          canActivate: [AuthGuard, RoleGuard], data: {role: 'ROLE_ADMIN', route: '/ingredientes'}},
+  {path: 'ingredientes/form/:id', component: IngredientesFormComponent,
+          canActivate: [AuthGuard, RoleGuard], data: {role: 'ROLE_ADMIN', route: '/ingredientes'}},
   {path: 'recetas', component: RecetasComponent},
   {path: 'recetas/vista/:id', component: RecetasVistaComponent},
-  {path: 'recetas/form', component: RecetasFormComponent},
-  {path: 'recetas/form/:id', component: RecetasFormComponent}
+  {path: 'recetas/form', component: RecetasFormComponent,
+          canActivate: [AuthGuard, RoleGuard], data: {role: 'ROLE_ADMIN', route: '/recetas'}},
+  {path: 'recetas/form/:id', component: RecetasFormComponent,
+          canActivate: [AuthGuard, RoleGuard], data: {role: 'ROLE_ADMIN', route: '/recetas'}},
+  {path: 'login', component: LoginComponent}
 ];
 
 @NgModule({

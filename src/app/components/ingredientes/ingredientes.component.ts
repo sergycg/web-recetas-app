@@ -6,6 +6,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { FormControl } from '@angular/forms';
 import { map, flatMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-ingredientes',
@@ -16,7 +17,7 @@ export class IngredientesComponent extends CommonListarComponent<Ingrediente, In
 
   // autocompleteControl = new FormControl();
 
-  constructor(service: IngredienteService) {
+  constructor(service: IngredienteService, public authService: AuthService) {
     super(service);
     this.titulo = 'Listado de Ingredientes';
     this.nombreModel = Ingrediente.name;

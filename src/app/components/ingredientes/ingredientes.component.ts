@@ -20,7 +20,7 @@ export class IngredientesComponent extends CommonListarComponent<Ingrediente, In
   constructor(service: IngredienteService, public authService: AuthService) {
     super(service);
     this.titulo = 'Listado de Ingredientes';
-    this.nombreModel = Ingrediente.name;
+    this.nombreModel = 'Ingrediente';
     this.sortByField = 'nombre';
     this.orderedType = 'asc';
     this.autocompleteControl = new FormControl();

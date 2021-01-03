@@ -18,7 +18,7 @@ export class RecetasComponent extends CommonListarComponent<Receta, RecetaServic
   constructor(service: RecetaService, public authService: AuthService) {
     super(service);
     this.titulo = 'Listado de Recetas';
-    this.nombreModel = Receta.name;
+    this.nombreModel = 'Receta';
     this.sortByField = 'nombre';
     this.orderedType = 'asc';
     this.autocompleteControl = new FormControl();

@@ -17,7 +17,7 @@ export class IngredientesFormComponent extends CommonFormComponent<Ingrediente, 
       super(service, router, route);
       this.titulo = 'Crear Ingrediente';
       this.model = new Ingrediente();
-      this.nombreModel = Ingrediente.name;
+      this.nombreModel = 'Ingrediente';
       this.redirect = '/ingredientes';
 
      }

@@ -42,7 +42,7 @@ export class RecetasFormComponent extends CommonFormComponent<Receta, RecetaServ
       super(service, router, route);
       this.titulo = 'Crear Receta';
       this.model = new Receta();
-      this.nombreModel = Receta.name;
+      this.nombreModel = 'Receta';
       this.redirect = undefined;
   }
 

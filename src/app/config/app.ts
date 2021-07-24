@@ -1,5 +1,5 @@
 //export const BASE_ENDPOINT = 'http://pamyser.myqnapcloud.com:38090';
-export const BASE_ENDPOINT = 'https://zuul-server-heroku.herokuapp.com'
+export const BASE_ENDPOINT = 'https://zuul-server-heroku.herokuapp.com';
 export const USERNAME_SECURITY = 'frontendapp';
 export const PASSWORD_SECURITY = '12345';
 export const GRANT_TYPE_SECURITY = 'password';
